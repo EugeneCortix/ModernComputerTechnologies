@@ -1,0 +1,15 @@
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.csprojAssemblyReference.cache
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\MainWindow.g.cs
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\App.g.cs
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT_MarkupCompile.cache
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT_MarkupCompile.lref
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\bin\Debug\SKT.exe.config
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\bin\Debug\SKT.exe
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\bin\Debug\SKT.pdb
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\MainWindow.baml
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.g.resources
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.Properties.Resources.resources
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.csproj.GenerateResource.cache
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.csproj.CoreCompileInputs.cache
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.exe
+C:\Users\TANYA\Documents\Study\Программирование\SKT\SKT\obj\Debug\SKT.pdb
