@@ -1,4 +1,5 @@
 ﻿// Modern computer technologies
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -27,9 +29,16 @@ namespace SKT
         double ky; // Scaling y
         double x;
         double z;
+        int xc; int zc;
         // For drawning
         double ex1;
         double ez1;
+        //Crushing 2
+        int det;
+        double xl;
+        double xr;
+        double zu;
+        double zd;
         List<Element> elements;
         List<DataInGrid> datasInGrid;
         DrawingGroup drawingGroup = new DrawingGroup();
@@ -82,7 +91,8 @@ namespace SKT
                 MakeElements();
                 DrawField(x / int.Parse(xCrush.Text), z / int.Parse(yCrush.Text));
 
-                
+                xc = int.Parse(xCrush.Text); 
+                zc = int.Parse(yCrush.Text);
 
                 GridOfW.ItemsSource = datasInGrid;
             }
@@ -181,11 +191,11 @@ namespace SKT
                 }
                 else
                 {
-                    int det = int.Parse(DetailRect.Text);
-                    double xl = double.Parse(RectXl.Text);
-                    double xr = double.Parse(RectXr.Text);
-                    double zu = double.Parse(RectZd.Text);
-                    double zd = double.Parse(RectZu.Text);
+                    det = int.Parse(DetailRect.Text);
+                    xl = double.Parse(RectXl.Text);
+                    xr = double.Parse(RectXr.Text);
+                    zu = double.Parse(RectZd.Text);
+                    zd = double.Parse(RectZu.Text);
 
                     if(xl > xr)
                     {
@@ -451,6 +461,83 @@ namespace SKT
             flag = false;
             updateVars();
             
+        }
+
+        private void Save_Button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text Files | *.txt";
+            saveFileDialog.Title = "Save Configurations as...";
+            if (saveFileDialog.ShowDialog() == false)
+                return;
+
+            string s = "";
+            if (flag) s += '1';
+            else s += 0;
+            s += '\n';
+            s += x.ToString() + ' ' + z.ToString() +'\n'; //FieldSize
+            if (flag) 
+            {
+                s += xc.ToString() + ' ' + zc.ToString() + '\n';
+            } else
+            {
+                // Crushing-2
+                s += xl.ToString() + ' ' + xr.ToString() + ' ' + zu.ToString() + ' ' + zd.ToString() + '\n';
+            }
+            // Table brushung
+            s += datasInGrid.Count.ToString() + '\n';
+            foreach (var item in datasInGrid) 
+            {
+                s += item.i.ToString() + ' ' + item.px.ToString() + ' ' + item.pz.ToString() + '\n';
+            }
+            System.IO.File.WriteAllText(saveFileDialog.FileName, s);
+        }
+
+        private void OpenButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Open File";
+            if (openFileDialog.ShowDialog() == false)
+                return;
+            string[] fileText = System.IO.File.ReadAllLines(openFileDialog.FileName);
+            // Type of Crushing
+            if (fileText[0] =="0") flag = false; 
+            else flag = true;
+            //Field
+            double dx = 0; double dz = 0; // For drawning
+            string[] sizes = fileText[1].Split(' ');
+            xVal.Text = sizes[0];
+            yVal.Text = sizes[1];
+            dx = double.Parse(sizes[0]);
+            dz = double.Parse(sizes[1]);
+            // Spliting
+            string[] splits = fileText[2].Split(' ');
+            if (flag)
+            {
+                xCrush.Text = splits[0];
+                yCrush.Text = splits[1];
+                dx /= double.Parse(splits[0]);
+                dz /= double.Parse(splits[1]);
+            }
+            else
+            {
+                RectXl.Text = splits[0];
+                RectXr.Text = splits[1];
+                RectZu.Text = splits[2];
+                RectZd.Text = splits[3];
+            }
+            // DatasInGrid
+            updateVars();
+            int datval = int.Parse(fileText[3]);
+            for(int i = 4; i < datval + 4; i++) //Till the end
+            {
+                string[] gridatas = fileText[i].Split(' ');
+                datasInGrid.Add(new DataInGrid(int.Parse(gridatas[0]), double.Parse(gridatas[1]), 
+                    double.Parse(gridatas[2])));
+            }
+            // Building
+            MakeElements();
+            DrawField(dx, dz);
         }
     }
     public class DataInGrid
