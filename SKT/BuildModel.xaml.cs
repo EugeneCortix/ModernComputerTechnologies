@@ -256,6 +256,9 @@ namespace SKT
                         el9.hz = z + zd;
                         eli.Add(el9);
 
+                    //ind for datasInGrid
+                    int ind = 0;
+
                     foreach(Element el in eli)
                     {
                         for(int i = 0; i < det; i++)
@@ -266,6 +269,8 @@ namespace SKT
                                 elem.hz = el.hz / det;
                                 elem.hx = el.hx / det;
                                 elements.Add(elem);
+                                datasInGrid.Add(new DataInGrid(ind, el.px, el.pz));
+                                ind++;
                             }
                     }
                     
