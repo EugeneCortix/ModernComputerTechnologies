@@ -30,6 +30,7 @@ namespace SKT
         double x;
         double z;
         int xc; int zc;
+        int NoN = 0;
         // For drawning
         double ex1;
         double ez1;
@@ -49,7 +50,6 @@ namespace SKT
         public BuildModel()
         {
             InitializeComponent();
-            buildaxes();
         }
 
         private void buildaxes()
@@ -59,11 +59,18 @@ namespace SKT
             myGeometryDrawing.Pen = new Pen(Brushes.Black, 3);
             lines.Children.Add(new LineGeometry(new Point(a, graphImage.Height), new Point(a, 0))); // z
             lines.Children.Add(new LineGeometry(new Point(a, graphImage.Height/2), new Point(graphImage.Width, graphImage.Height / 2))); // x
-
+            
+            // Nodes
+            NoN = int.Parse(NB.Text);
+            for(int i = 0; i < NoN; i++)
+            {
+                LineGeometry node = new LineGeometry(new Point(graphImage.Width / NoN * i, graphImage.Height / 2+3),
+                    new Point(graphImage.Width/NoN*i, graphImage.Height / 2-3));
+                lines.Children.Add(node);
+            }
             myGeometryDrawing.Geometry = lines;
             drawingGroup.Children.Add(myGeometryDrawing);
             graphImage.Source = new DrawingImage(drawingGroup);
-
         }
 
         private void updateVars() 
@@ -472,6 +479,7 @@ namespace SKT
                 return;
 
             string s = "";
+            s += NoN.ToString() + '\n';
             if (flag) s += '1';
             else s += 0;
             s += '\n';
@@ -500,18 +508,20 @@ namespace SKT
             if (openFileDialog.ShowDialog() == false)
                 return;
             string[] fileText = System.IO.File.ReadAllLines(openFileDialog.FileName);
+            //
+            NB.Text = fileText[0];
             // Type of Crushing
-            if (fileText[0] =="0") flag = false; 
+            if (fileText[1] =="0") flag = false; 
             else flag = true;
             //Field
             double dx = 0; double dz = 0; // For drawning
-            string[] sizes = fileText[1].Split(' ');
+            string[] sizes = fileText[2].Split(' ');
             xVal.Text = sizes[0];
             yVal.Text = sizes[1];
             dx = double.Parse(sizes[0]);
             dz = double.Parse(sizes[1]);
             // Spliting
-            string[] splits = fileText[2].Split(' ');
+            string[] splits = fileText[3].Split(' ');
             if (flag)
             {
                 xCrush.Text = splits[0];
@@ -528,8 +538,8 @@ namespace SKT
             }
             // DatasInGrid
             updateVars();
-            int datval = int.Parse(fileText[3]);
-            for(int i = 4; i < datval + 4; i++) //Till the end
+            int datval = int.Parse(fileText[4]);
+            for(int i = 5; i < datval + 5; i++) //Till the end
             {
                 string[] gridatas = fileText[i].Split(' ');
                 datasInGrid.Add(new DataInGrid(int.Parse(gridatas[0]), double.Parse(gridatas[1]), 
